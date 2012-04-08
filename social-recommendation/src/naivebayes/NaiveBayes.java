@@ -12,7 +12,7 @@ import java.text.*;
 /* TODO: Fix to inherit form Classifier again; then remove local _arffData and _classIndex */
 public class NaiveBayes /*extends Classifier*/ {
 
-	public static DecimalFormat _df = new DecimalFormat("0.####");
+	public static DecimalFormat _df = new DecimalFormat("0.######");
 
 	public ArffData _arffData = null;
 	public int _classIndex    = -1;
@@ -174,7 +174,7 @@ public class NaiveBayes /*extends Classifier*/ {
 		//System.out.println(this);
 	}
 
-	public int evaluate(ArffData.DataEntry de) {
+	public int evaluate(ArffData.DataEntry de, double threshold) {
 
 		// Get class attribute
 		ArffData.Attribute ca = _arffData._attr.get(_classIndex);
@@ -212,11 +212,12 @@ public class NaiveBayes /*extends Classifier*/ {
 			}															
 		}
 
-		for (int i = 0; i < cv.length; i++){
+		/*for (int i = 0; i < cv.length; i++){
 			System.out.println(i + " " + _df.format(cv[i]) + "/" + _df.format(Z) + "=" + _df.format(cv[i]/Z));
-		}
+		}*/
 		
-		//System.out.println("Best [" + best_class + "] " + best_class_value + " :: " + de);
+		System.out.println("Best [" + best_class + "] " + best_class_value + " :: " + de);
+		System.out.println(cv[0]/Z > thresholdde);
 		return best_class;	
 	}
 
@@ -227,7 +228,7 @@ public class NaiveBayes /*extends Classifier*/ {
 		int falseNegative = 0;
 		int correct = 0;
 		for (ArffData.DataEntry de : data) {
-			int pred = evaluate(de); // Evaluate returns sorted results
+			int pred = evaluate(, 0.5de); // Evaluate returns sorted results
 			int actual     = ((Integer)de.getData(_classIndex)).intValue();
 			if (pred == actual) correct++;
 			if (pred == actual && actual == 1) truePositive++;
@@ -313,9 +314,7 @@ public class NaiveBayes /*extends Classifier*/ {
 		System.out.println("Train recall after " + iterations + " iterations:" + (totalTrainRecall/iterations));
 		System.out.println("Test recall after " + iterations + " iterations:" + (totalTestRecall/iterations));
 		System.out.println("Train f-measure after " + iterations + " iterations:" + (totalTrainF/iterations));
-		System.out.println("Test f-measure after " + iterations + " iterations:" + (totalTestF/iterations));
-		
-		
-
+		System.out.println("Test f-measure after " + iterations + " iterations:" + (totalTestF/iterations))
 	}
 
+}
