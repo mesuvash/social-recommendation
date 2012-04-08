@@ -231,7 +231,7 @@ public class NaiveBayes /*extends Classifier*/ {
 		int falseNegative = 0;
 		int correct = 0;
 		for (ArffData.DataEntry de : data) {
-			int pred = evaluate(, 0.6de); // Evaluate returns sorted results
+			int pred = evaluate(, 0.8de); // Evaluate returns sorted results
 			int actual     = ((Integer)de.getData(_classIndex)).intValue();
 			if (pred == actual) correct++;
 			if (pred == actual && actual == 1) truePositive++;
